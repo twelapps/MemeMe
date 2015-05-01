@@ -33,18 +33,20 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         // Do any additional setup after loading the view, typically from a nib.
         
         // Assign the default text attributes and some field-specific attributes to the TOP and BOTTOM fields in the Meme editor
-        topText.delegate = self                             // together with "class...., UITextFieldDelegate" this statement ensures that the UITextField
-                                                            // methods such as "textFieldDidBeginEditing" will be invoked
-        topText.defaultTextAttributes = memeTextAttributes
-        topText.textAlignment = NSTextAlignment.Center      // Center align text
-        topText.borderStyle = UITextBorderStyle.None        // Makes the container in which the text resides transparent
-        bottomText.delegate = self
-        bottomText.defaultTextAttributes = memeTextAttributes
-        bottomText.textAlignment = NSTextAlignment.Center
-        bottomText.borderStyle = UITextBorderStyle.None
+        assignTextFieldAttributes(topText)
+        assignTextFieldAttributes(bottomText)
+    }
+    
+    func assignTextFieldAttributes(textField: UITextField) {
+        textField.delegate = self                            // together with "class...., UITextFieldDelegate" this statement ensures that the UITextField
+                                                             // methods such as "textFieldDidBeginEditing" will be invoked
+        textField.defaultTextAttributes = memeTextAttributes
+        textField.textAlignment = NSTextAlignment.Center     // Center align text
+        textField.borderStyle = UITextBorderStyle.None       // Makes the container in which the text resides transparent
     }
     
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
         // Only set MAKE PICTURE if this is supported, e.g. not by simulator
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
@@ -162,7 +164,8 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         self.view.endEditing(true)
-        return false
+//        return false
+        return true // Udacity code review
     }
     
     func subscribeToKeyboardNotifications() {
@@ -181,14 +184,16 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     func keyboardWillShow(notification: NSNotification) {
         // Move view up if the BOTTOM field is being edited
         if bottomText.isFirstResponder() {
-            self.view.frame.origin.y -= getKeyboardHeight(notification)
+//            self.view.frame.origin.y -= getKeyboardHeight(notification)
+            self.view.frame.origin.y = -getKeyboardHeight(notification)
         }
     }
     
     func keyboardWillHide(notification: NSNotification) {
         // Move view down if the BOTTOM field is ending being edited
         if bottomText.isFirstResponder() {
-            self.view.frame.origin.y += getKeyboardHeight(notification)
+//            self.view.frame.origin.y += getKeyboardHeight(notification)
+            self.view.frame.origin.y = 0
         }
     }
     
@@ -200,11 +205,16 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     func saveMeme() {
         //Create the meme
-        var meme = Meme()
-        meme.topText = topText.text
-        meme.bottomText = bottomText.text
-        meme.originalImage = imagePickerView.image
-        meme.memedImage = generateMemedImage()
+//****************************************************************************************************************
+//        SAVE THIS COMMENT FOR FUTURE USE
+//        var meme = memeConstructor(topText: topText.text, bottomText: bottomText.text, originalImage: imagePickerView.image!, memedImage: generateMemedImage())
+//****************************************************************************************************************
+        var meme = Meme(topText: topText.text, bottomText: bottomText.text, originalImage: imagePickerView.image!, memedImage: generateMemedImage())
+//        var meme: Meme()
+//        meme.topText = topText.text
+//        meme.bottomText = bottomText.text
+//        meme.originalImage = imagePickerView.image
+//        meme.memedImage = generateMemedImage()
         
         // Add memed image and other info to the memes array on the Application Delegate
         (UIApplication.sharedApplication().delegate as! AppDelegate).memes.append(meme)
@@ -232,6 +242,4 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         return tempMemedImage
     }
 
-    
-    
 }

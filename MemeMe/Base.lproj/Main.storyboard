@@ -73,7 +73,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="mrW-1G-T7b">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="mrW-1G-T7b">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -105,6 +105,12 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="mrW-1G-T7b" firstAttribute="leading" secondItem="A5K-mz-g3Z" secondAttribute="leadingMargin" constant="-16" id="B4m-HP-nSf"/>
+                            <constraint firstItem="mrW-1G-T7b" firstAttribute="top" secondItem="A5K-mz-g3Z" secondAttribute="topMargin" id="Bi5-1n-PQe"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="mrW-1G-T7b" secondAttribute="trailing" constant="-16" id="SDf-Af-uRS"/>
+                            <constraint firstItem="mrW-1G-T7b" firstAttribute="bottom" secondItem="A5K-mz-g3Z" secondAttribute="bottomMargin" id="ixn-Kh-Ew1"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Sent Memes" id="0ti-zQ-ZLq">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="4R3-yH-yIr">
@@ -113,6 +119,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="myTableView" destination="mrW-1G-T7b" id="WAa-f5-Gzi"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yZP-dG-4Av" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -290,6 +299,12 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button hidden="YES" opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y5z-2G-5C9">
+                                                    <rect key="frame" x="75" y="0.0" width="31" height="28"/>
+                                                    <state key="normal" image="close.png">
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                </button>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
@@ -308,6 +323,7 @@
                                             <constraint firstItem="hB3-6q-UCx" firstAttribute="centerX" secondItem="4zk-cT-SDC" secondAttribute="centerX" id="vQG-ne-Xku"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="close" destination="Y5z-2G-5C9" id="ssh-Yp-WVu"/>
                                             <outlet property="memeImageView" destination="hB3-6q-UCx" id="GUe-MQ-mi8"/>
                                             <outlet property="nameLabel" destination="sgs-td-sRG" id="zWP-bR-2M7"/>
                                             <outlet property="schemeLabel" destination="E4B-9U-VZx" id="rdH-5I-WdG"/>
@@ -315,8 +331,8 @@
                                     </collectionViewCell>
                                 </cells>
                                 <connections>
-                                    <outlet property="dataSource" destination="Gdy-b5-BUU" id="jJk-zB-dHo"/>
-                                    <outlet property="delegate" destination="Gdy-b5-BUU" id="bea-nB-MD6"/>
+                                    <outlet property="dataSource" destination="Gdy-b5-BUU" id="MFt-ug-Zs8"/>
+                                    <outlet property="delegate" destination="Gdy-b5-BUU" id="RXN-9R-jNe"/>
                                 </connections>
                             </collectionView>
                         </subviews>
@@ -324,12 +340,21 @@
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="D4e-sx-NYN" secondAttribute="bottom" id="0Z4-8H-umo"/>
                             <constraint firstItem="D4e-sx-NYN" firstAttribute="leading" secondItem="028-yy-Y72" secondAttribute="leading" id="9fx-HE-UBT"/>
+                            <constraint firstItem="D4e-sx-NYN" firstAttribute="leading" secondItem="028-yy-Y72" secondAttribute="leadingMargin" constant="-16" id="IIC-ke-0mt"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="D4e-sx-NYN" secondAttribute="trailing" constant="-16" id="Itg-Nk-AcY"/>
                             <constraint firstAttribute="trailing" secondItem="D4e-sx-NYN" secondAttribute="trailing" id="QD0-Ky-mob"/>
+                            <constraint firstItem="D4e-sx-NYN" firstAttribute="bottom" secondItem="028-yy-Y72" secondAttribute="bottomMargin" id="lZt-eO-1Je"/>
                             <constraint firstItem="D4e-sx-NYN" firstAttribute="top" secondItem="028-yy-Y72" secondAttribute="top" id="sV6-Ej-zSQ"/>
+                            <constraint firstItem="D4e-sx-NYN" firstAttribute="top" secondItem="028-yy-Y72" secondAttribute="topMargin" id="ymL-eB-vds"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Sent Memes" id="0EV-0Z-OQL" userLabel="Sent memes">
+                        <barButtonItem key="leftBarButtonItem" title="Edit" id="Vak-zN-fzz">
+                            <connections>
+                                <action selector="collectionEditMode:" destination="Gdy-b5-BUU" id="6ge-6F-oAl"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="JyJ-nf-v2S">
                             <connections>
                                 <segue destination="vXZ-lx-hvc" kind="modal" id="yAU-ua-h4b"/>
@@ -337,6 +362,10 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="edit" destination="Vak-zN-fzz" id="6SR-Pe-ihH"/>
+                        <outlet property="myCollectionView" destination="D4e-sx-NYN" id="wqg-FY-6TU"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BIv-H1-CtX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -346,6 +375,7 @@
     <resources>
         <image name="Collection" width="30" height="30"/>
         <image name="Table" width="30" height="30"/>
+        <image name="close.png" width="256" height="256"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="yAU-ua-h4b"/>

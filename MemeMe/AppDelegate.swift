@@ -5,6 +5,16 @@
 //  Created by Twelker on Apr/26/15.
 //  Copyright (c) 2015 Twelker. All rights reserved.
 //
+//  Changed after Udacity code review:
+//  - added a constructor to the Meme.swift structure
+//  - added (programmatically) an "Action" system toolbar button to the detail view, in order to send the meme again and again
+//  - remove superclass methods from the code in case no custom logic is added
+//  - implement practice to always call superclass method and with same parameters as the override is invoked
+//  - textFieldShouldReturn method: return true, not false (see Apple doc)
+//  - improve view shifting up and down following Udacity comments
+//  - add save to / restore from user default data
+//  - delete rows from table (via table view and via collection view), to remove memes that you are no longer interested in
+//
 
 import UIKit
 
@@ -14,9 +24,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     var memes = [Meme]() // Define the Shared Model here! Can be accessed from anywhere inside the project.
+    
+    let defaults = NSUserDefaults.standardUserDefaults()
+    let memesDataKey = "memesDataKey"
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        self.restoreData()
+        
         return true
     }
 
@@ -28,6 +44,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        
+        self.saveData()
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
@@ -40,6 +58,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    func saveData() {
+        
+        defaults.setObject(NSKeyedArchiver.archivedDataWithRootObject(memes), forKey: memesDataKey)
+    }
+    
+    func restoreData() {
+
+        if defaults.dataForKey(memesDataKey) != nil {
+            memes = NSKeyedUnarchiver.unarchiveObjectWithData(defaults.dataForKey(memesDataKey)!) as! [Meme]
+        }
+
     }
 
 
