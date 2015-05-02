@@ -14,6 +14,8 @@ class MemeCollectionViewController: UIViewController {
     @IBOutlet weak var myCollectionView  : UICollectionView!
     @IBOutlet weak var edit              : UIBarButtonItem!
     
+    let memesDefinedHere = (UIApplication.sharedApplication().delegate as! AppDelegate)
+    
 //    var editMode: Bool = false
     let editMode   : String = "Done"
     let nonEditMode: String = "Edit"
@@ -24,7 +26,7 @@ class MemeCollectionViewController: UIViewController {
         
         // If there are sent memes the sent memes view should be displayed, if not then the meme editor should be displayed
         
-        if (UIApplication.sharedApplication().delegate as! AppDelegate).memes.count == 0 {
+        if memesDefinedHere.memes.count == 0 {
             let storyboard = self.storyboard
             let nextVC = storyboard!.instantiateViewControllerWithIdentifier("MemeEditorViewController") as! UIViewController
             self.presentViewController(nextVC, animated: true, completion: nil)
@@ -42,7 +44,7 @@ class MemeCollectionViewController: UIViewController {
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return (UIApplication.sharedApplication().delegate as! AppDelegate).memes.count
+        return memesDefinedHere.memes.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -51,9 +53,9 @@ class MemeCollectionViewController: UIViewController {
         
         if cell != nil {
             // We now know that cell is not empty. Set the name and image
-            cell!.nameLabel.text = (UIApplication.sharedApplication().delegate as! AppDelegate).memes[indexPath.row].topText
-            cell!.memeImageView?.image = (UIApplication.sharedApplication().delegate as! AppDelegate).memes[indexPath.row].memedImage
-            cell!.schemeLabel.text = (UIApplication.sharedApplication().delegate as! AppDelegate).memes[indexPath.row].bottomText
+            cell!.nameLabel.text = memesDefinedHere.memes[indexPath.row].topText
+            cell!.memeImageView?.image = memesDefinedHere.memes[indexPath.row].memedImage
+            cell!.schemeLabel.text = memesDefinedHere.memes[indexPath.row].bottomText
         }
         
         if self.navigationItem.leftBarButtonItem?.title == editMode {
@@ -71,8 +73,14 @@ class MemeCollectionViewController: UIViewController {
 
     func deleteMeme(sender:UIButton) {
         let i : Int = (sender.layer.valueForKey("index")) as! Int
-        // Remove from global array
-        (UIApplication.sharedApplication().delegate as! AppDelegate).memes.removeAtIndex(i)
+        
+        // Remove from global memes array defined in AppDelegate.swift
+        memesDefinedHere.memes.removeAtIndex(i)
+        
+        // Write resulting Memes array to user defaults immediately
+        NSUserDefaults.standardUserDefaults().setObject(NSKeyedArchiver.archivedDataWithRootObject(memesDefinedHere.memes),
+            forKey: memesDefinedHere.memesDataKey)
+        
         myCollectionView!.reloadData()
     }
 
@@ -86,8 +94,7 @@ class MemeCollectionViewController: UIViewController {
             as! MemeDetailViewController
         
         // Set the selectedMemedImage  property on the MemeDetailViewController
-        detailController.selectedMemedImage =
-            (UIApplication.sharedApplication().delegate as! AppDelegate).memes[indexPath.row].memedImage
+        detailController.selectedMemedImage = memesDefinedHere.memes[indexPath.row].memedImage
         
         // Push it on the nav stack
         self.navigationController!.pushViewController(detailController, animated: true)

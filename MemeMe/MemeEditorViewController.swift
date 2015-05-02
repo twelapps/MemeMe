@@ -28,6 +28,8 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     @IBOutlet weak var shareMeme      : UIBarButtonItem!
     @IBOutlet weak var cancel         : UIBarButtonItem!
     
+    let memesDefinedHere = (UIApplication.sharedApplication().delegate as! AppDelegate)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -63,7 +65,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         }
         
         // Only set SENT MEMES ("Cancel") function after having saved at least one meme
-        if (UIApplication.sharedApplication().delegate as! AppDelegate).memes.count == 0 {
+        if memesDefinedHere.memes.count == 0 {
             cancel.title = ""
             cancel.enabled = false
         } else {
@@ -217,7 +219,12 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
 //        meme.memedImage = generateMemedImage()
         
         // Add memed image and other info to the memes array on the Application Delegate
-        (UIApplication.sharedApplication().delegate as! AppDelegate).memes.append(meme)
+        memesDefinedHere.memes.append(meme)
+        
+        // Write resulting Memes array to user defaults immediately
+        NSUserDefaults.standardUserDefaults().setObject(NSKeyedArchiver.archivedDataWithRootObject(memesDefinedHere.memes),
+            forKey: memesDefinedHere.memesDataKey)
+
     }
     
     func generateMemedImage() -> UIImage

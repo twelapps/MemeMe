@@ -14,6 +14,7 @@
 //  - improve view shifting up and down following Udacity comments
 //  - add save to / restore from user default data
 //  - delete rows from table (via table view and via collection view), to remove memes that you are no longer interested in
+//  - write to user defaults also after every change. iOS will synchronize (= write to disk) at times it deems appropriate.
 //
 
 import UIKit
@@ -27,6 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     let defaults = NSUserDefaults.standardUserDefaults()
     let memesDataKey = "memesDataKey"
+    
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -45,7 +47,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         
-        self.saveData()
+        // Array of memes was already saved after each change. Now enforce synchronization with the user defaults (= write to disk) at this point.
+        defaults.synchronize()
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
@@ -58,11 +61,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    }
-    
-    func saveData() {
-        
-        defaults.setObject(NSKeyedArchiver.archivedDataWithRootObject(memes), forKey: memesDataKey)
     }
     
     func restoreData() {

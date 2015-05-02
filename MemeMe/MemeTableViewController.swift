@@ -12,6 +12,8 @@ import UIKit
 class MemeTableViewController: UIViewController {
     
     @IBOutlet weak var myTableView  : UITableView!
+    
+    let memesDefinedHere = (UIApplication.sharedApplication().delegate as! AppDelegate)
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated) // Give as parameter what the override func also received, here: animated.
@@ -25,7 +27,7 @@ class MemeTableViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         
         // If there are sent memes the sent memes view should be displayed, if not then the meme editor should be displayed
-        if (UIApplication.sharedApplication().delegate as! AppDelegate).memes.count == 0 {
+        if memesDefinedHere.memes.count == 0 {
             let storyboard = self.storyboard
             let nextVC = storyboard!.instantiateViewControllerWithIdentifier("MemeEditorViewController") as! UIViewController
             self.presentViewController(nextVC, animated: true, completion: nil)
@@ -38,7 +40,7 @@ class MemeTableViewController: UIViewController {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return (UIApplication.sharedApplication().delegate as! AppDelegate).memes.count
+        return memesDefinedHere.memes.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -51,12 +53,12 @@ class MemeTableViewController: UIViewController {
         }
         
         // We know that cell is not empty now so we use ! to force unwrapping
-        cell!.imageView?.image = (UIApplication.sharedApplication().delegate as! AppDelegate).memes[indexPath.row].memedImage
-        cell!.textLabel!.text  = (UIApplication.sharedApplication().delegate as! AppDelegate).memes[indexPath.row].topText
+        cell!.imageView?.image = memesDefinedHere.memes[indexPath.row].memedImage
+        cell!.textLabel!.text  = memesDefinedHere.memes[indexPath.row].topText
         
         // If the cell has a detail label, we will provide data for it.
         if let detailTextLabel = cell!.detailTextLabel {
-            detailTextLabel.text = (UIApplication.sharedApplication().delegate as! AppDelegate).memes[indexPath.row].bottomText
+            detailTextLabel.text = memesDefinedHere.memes[indexPath.row].bottomText
         }
         
         return cell!
@@ -73,8 +75,7 @@ class MemeTableViewController: UIViewController {
             as! MemeDetailViewController
         
         // Set the selectedMemedImage  property on the MemeDetailViewController
-        detailController.selectedMemedImage =
-        (UIApplication.sharedApplication().delegate as! AppDelegate).memes[indexPath.row].memedImage
+        detailController.selectedMemedImage = memesDefinedHere.memes[indexPath.row].memedImage
         
         // Push it onto the nav stack
         self.navigationController!.pushViewController(detailController, animated: true)
@@ -97,9 +98,15 @@ class MemeTableViewController: UIViewController {
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         
         if editingStyle == UITableViewCellEditingStyle.Delete {
-            // Remove from global array
-            (UIApplication.sharedApplication().delegate as! AppDelegate).memes.removeAtIndex(indexPath.row)
-            // and remove from the view
+            
+            // Remove from global memes array defined in AppDelegate.swift
+            memesDefinedHere.memes.removeAtIndex(indexPath.row)
+            
+            // Write resulting Memes array to user defaults immediately
+            NSUserDefaults.standardUserDefaults().setObject(NSKeyedArchiver.archivedDataWithRootObject(memesDefinedHere.memes),
+                forKey: memesDefinedHere.memesDataKey)
+            
+            // and remove from the current view
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
             
             tableView.reloadData()

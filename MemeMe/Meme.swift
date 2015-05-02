@@ -14,7 +14,7 @@ class Meme : NSObject, NSCoding {
     var bottomText: String
     var originalImage: UIImage // Import UIKit if you use UIImage type
     var memedImage: UIImage
-    
+        
     init (topText:String, bottomText:String, originalImage:UIImage, memedImage:UIImage) {
         self.topText = topText
         self.bottomText = bottomText
