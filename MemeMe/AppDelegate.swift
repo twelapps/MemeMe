@@ -15,6 +15,7 @@
 //  - add save to / restore from user default data
 //  - delete rows from table (via table view and via collection view), to remove memes that you are no longer interested in
 //  - write to user defaults also after every change. iOS will synchronize (= write to disk) at times it deems appropriate.
+//  - 1: remove original image for now, not used and consumes lot of memory. And change JPEG quality to minimum.
 //
 
 import UIKit

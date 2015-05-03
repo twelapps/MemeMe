@@ -211,12 +211,8 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
 //        SAVE THIS COMMENT FOR FUTURE USE
 //        var meme = memeConstructor(topText: topText.text, bottomText: bottomText.text, originalImage: imagePickerView.image!, memedImage: generateMemedImage())
 //****************************************************************************************************************
-        var meme = Meme(topText: topText.text, bottomText: bottomText.text, originalImage: imagePickerView.image!, memedImage: generateMemedImage())
-//        var meme: Meme()
-//        meme.topText = topText.text
-//        meme.bottomText = bottomText.text
-//        meme.originalImage = imagePickerView.image
-//        meme.memedImage = generateMemedImage()
+//1        var meme = Meme(topText: topText.text, bottomText: bottomText.text, originalImage: imagePickerView.image!, memedImage: generateMemedImage())
+        var meme = Meme(topText: topText.text, bottomText: bottomText.text, memedImage: generateMemedImage())
         
         // Add memed image and other info to the memes array on the Application Delegate
         memesDefinedHere.memes.append(meme)
